@@ -1,0 +1,9 @@
+[2025-11-27 16:21:34] Failed login attempt with username 'username'
+[2025-11-27 16:22:19] User 'Admin' logged in
+[2025-11-27 16:22:40] Uploaded file: 6c326c13aa5c4a65adc60127c46ef615_8d31cc805ff7451ab39e35b49890803e_8ebe9f7273894ca6997541ba51d966fb_88e4f29560e74c5dbd4ce68ce46b2752_employee_data.csv
+[2025-11-27 18:13:06] User 'Admin' logged in
+[2025-11-27 18:13:16] Uploaded file: 4c13fbfb8b3745ad9484a468e9bb00f8_sample_logs.csv
+[2025-11-27 18:22:15] User 'Admin' logged in
+[2025-11-27 18:22:20] Uploaded file: c958387d4ca54f38a940607ce006c8de_sample_logs.csv
+[2025-11-27 19:48:37] User 'Admin' logged in
+[2025-11-27 19:48:42] Uploaded file: 858342782d954c1d897c8594df78e9c9_sample_logs.csv

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insider Threat Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://wallpapercave.com/wp/wp2757874.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container-box {
+      width: 80%;
+      max-width: 1000px;
+      background: rgba(0,0,0,0.75);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 30px red;
+    }
+
+    h1, h3 {
+      text-shadow: 0px 0px 15px red;
+      color: red;
+    }
+
+    .card {
+      background: black;
+      color: red;
+      border: none;
+      box-shadow: 0px 0px 15px red;
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    table {
+      background: #111;
+      color: #eee;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th {
+      background: #00c6ff;
+      color: black;
+    }
+
+    td {
+      background: rgba(255, 0, 0, 0.3);
+    }
+
+    .reason-box {
+      background: rgba(0,0,0,0.7);
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px red;
+      font-size: 0.9rem;
+      color: red;
+    }
+
+    .btn-custom {
+      margin-top: 15px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #ff512f, #dd2476);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 0px 20px rgba(255,0,150,0.7);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-custom:hover {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      box-shadow: 0px 0px 25px rgba(0,255,255,0.9);
+      transform: scale(1.05);
+    }
+
+    /* Alert box styles */
+    .alert-box {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,0,0,0.9);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 25px red;
+      font-weight: bold;
+      z-index: 1000;
+      display: none;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px red; }
+      50% { box-shadow: 0 0 35px red; }
+      100% { box-shadow: 0 0 15px red; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-box">
+    <h1>🔐 Insider Threat Detection Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="row mt-4 justify-content-center">
+      <div class="col-md-3"><div class="card"><h5>Total Logs</h5><p>{{ total_logs }}</p></div></div>
+      <div class="col-md-3"><div class="card"><h5>Total Users</h5><p>{{ total_users }}</p></div></div>
+      <div class="col-md-3"><div class="card text-danger"><h5>Anomalies</h5><p>{{ anomalies_count }}</p></div></div>
+    </div>
+
+    <!-- Recent Anomalies Table -->
+    <h3 class="mt-4">Recent Anomalies</h3>
+    {% if anomalies %}
+    <div class="table-responsive">
+      <table class="table mt-3 text-center">
+        <thead><tr><th>User</th><th>Files Accessed</th><th>USB</th><th>Data (MB)</th><th>Score</th></tr></thead>
+        <tbody>
+          {% for a in anomalies %}
+          <tr>
+            <td>{{ a.user_id }}</td>
+            <td>{{ a.files_accessed }}</td>
+            <td>{{ a.usb_inserted }}</td>
+            <td>{{ a.data_transferred_MB }}</td>
+            <td>{{ a.anomaly_score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+ <!-- Action Buttons -->
+    <div class="mt-3 mb-4">
+      <a href="/detailed_results" class="btn btn-custom">View Full Results</a>
+      <a href="/admin_logs" class="btn btn-custom">Security Logs</a>
+      <a href="/prevention" class="btn btn-custom">Prevention Tips</a>
+      <a href="/login" class="btn btn-custom">Logout</a>
+    </div>
+    <!-- Reasons Section -->
+    <div class="reason-box">
+      <h5>Possible Reasons for Detected Anomalies:</h5>
+      <ul class="list-unstyled">
+        {% for a in anomalies %}
+          <li>
+            <b>{{ a.user_id }}</b> flagged due to:
+            {% if a.files_accessed > 50 %} High number of file accesses ({{ a.files_accessed }}). {% endif %}
+            {% if a.usb_inserted > 0 %} USB device usage detected. {% endif %}
+            {% if a.data_transferred_MB > 500 %} Large data transfer ({{ a.data_transferred_MB }} MB). {% endif %}
+            {% if a.login_time and (a.login_time|int < 7 or a.login_time|int > 20) %} Unusual login time ({{ a.login_time }}). {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <p class="mt-3">✅ No anomalies detected.</p>
+    {% endif %}
+  </div>
+
+  <!-- Live Alert Box -->
+  <div class="alert-box" id="liveAlertBox"></div>
+
+  <!-- Alert Sound -->
+  <audio id="alertSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+
+  <!-- Live Alert Script -->
+  <script>
+    async function checkAlerts() {
+      try {
+        const res = await fetch("/api/get_alerts");
+        const data = await res.json();
+        if (data.alert) {
+          document.getElementById("alertSound").play();
+          const box = document.getElementById("liveAlertBox");
+          box.innerText = data.alert;
+          box.style.display = "block";
+          setTimeout(() => box.style.display = "none", 8000);
+        }
+      } catch (err) {
+        console.error("Error checking alerts:", err);
+      }
+    }
+    setInterval(checkAlerts, 5000);
+  </script>
+</body>
+</html>

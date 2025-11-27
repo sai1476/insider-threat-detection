@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Dataset</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://wallpapercave.com/wp/wp2757874.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .upload-box {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      width: 450px;
+      box-shadow: 0px 0px 25px red;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: red;
+      text-shadow: 0px 0px 10px red;
+    }
+
+    .form-label {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: block;
+      color: red;
+    }
+
+    .form-control {
+      margin: 0 auto;
+      width: 100%;
+      background: #1a1a1a;
+      border: 2px solid red;
+      color: white;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .btn-custom {
+      margin-top: 20px;
+      width: 100%;
+      font-size: 1.2rem;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #ff512f, #dd2476);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 0px 20px rgba(255,0,150,0.7);
+      transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      box-shadow: 0px 0px 25px rgba(0,255,255,0.9);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-box">
+  <h2>Upload Insider Log Dataset</h2>
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <label for="file" class="form-label">Choose CSV File:</label>
+    <input type="file" name="file" id="file" class="form-control" required>
+    <button type="submit" class="btn btn-custom">Run Detection</button>
+  </form>
+</div>
+</body>
+</html>
